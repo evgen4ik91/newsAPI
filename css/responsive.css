@@ -1,0 +1,4 @@
+@media screen and (max-width: 640px) {
+  .news-item__head-img {
+    width: 100%;
+    margin-bottom: 16px; } }
