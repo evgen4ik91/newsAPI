@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>newsAPI</title>
-  <link rel="stylesheet" type="text/css" href="./css/styles.css">
-</head>
-<body>
-  <header class="header">
-    <div class="container">
-      <h1 class="header__logo">newsAPI</h1> 
-    </div>
-  </header>
-  <section class="content">
-    <div class="container">
-      <div class="search">
-        
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>newsAPI</title>
+    <link rel="stylesheet" type="text/css" href="./css/styles.css">
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <h1 class="header__logo">newsAPI</h1>
       </div>
-      <div class="filter"></div>
-      <div class="news"></div>
-    </div>
-  </section>
-
-  <script src="./js/script.js"></script>
-</body>
+    </header>
+    <section class="content">
+      <div class="container">
+        <div class="search">
+          <input id="search-input" class="search__input" type="search" placeholder="Search..." />
+        </div>
+        <div class="row filter" id="filter-container"></div>
+        <div class="news loading">
+          <h3 class="news__title" id="news-title"></h3>
+          <div class="news__progress-bar"></div>
+          <div id="news-container"></div>
+        </div>
+      </div>
+    </section>
+    <script src="./js/script.js"></script>
+  </body>
 </html>
