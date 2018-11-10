@@ -13,34 +13,44 @@ var apiParams = {
       code: 'sources'
     }
   ],
-  defaultParams: [
-    'us',
-    'en',
-    'all',
-    'all'
-  ],
+  defaultParams: {
+    country: 'us',
+    language: 'en',
+    category: 'all',
+    sources: 'all'
+  },
   filterItems: [
     {
-      id: 1,
       name: 'country',
       list: ['ae', 'ar', 'at', 'au', 'be', 'bg', 'br', 'ca', 'ch', 'cn', 'co', 'cu', 'cz', 'de', 'eg', 'fr', 'gb', 'gr', 'hk', 'hu', 'id', 'ie', 'il', 'in', 'it', 'jp', 'kr', 'lt', 'lv', 'ma', 'mx', 'my', 'ng', 'nl', 'no', 'nz', 'ph', 'pl', 'pt', 'ro', 'rs', 'ru', 'sa', 'se', 'sg', 'si', 'sk', 'th', 'tr', 'tw', 'ua', 'us', 've', 'za']
     },
     {
-      id: 2,
       name: 'language',
       list: ['ar', 'de', 'en', 'es', 'fr', 'he', 'it', 'nl', 'no', 'pt', 'ru', 'se', 'ud', 'zh']
     },
     {
-      id: 3,
       name: 'category',
       list: ['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology']
     },
     {
-      id: 4,
       name: 'sources',
       list: []
     }
-  ]
+  ],
+  errorMessages: {
+    nothing: {
+      isWarn: false,
+      text: 'Nothing to show'
+    },
+    limitReached: {
+      isWarn: true,
+      text: 'Requests limit has been reached'
+    },
+    badRequest: {
+      isWarn: true,
+      text: 'Bad request'
+    }
+  }
 }
 
 var search = {
@@ -65,23 +75,51 @@ var filter = {
   container: document.getElementById('filter-container'),
   init(items) {
     this.render(items);
+    this.changeListener();
   },
   render(items) {
-    let html = items.map((item, i) => this.template(item, i)).join('');
+    let html = items.map(item => this.template(item)).join('');
     this.container.innerHTML = html;
   },
-  template(item, i) {
-    let options = item.list.map(option => `<option value="${option}" ${option === apiParams.defaultParams[i] ? 'selected' : ''}>${option}</option>`).join('');
+  template(item) {
+    let selectedOption = apiParams.defaultParams[item.name];
+    let options = this.renderOptions(item.list, selectedOption);
     return `
       <div class="col filter__item">
-        <select class="styled-inp">${options}</select>
+        <select class="styled-inp" id="${item.name}-select" data-type="${item.name}">${options}</select>
       </div>
     `;
+  },
+  renderOptions(options, selectedOption) {
+    return this.optionTemplate('all', selectedOption) + options.map(option => this.optionTemplate(option, selectedOption)).join('');
+  },
+  optionTemplate(option, selected = false) {
+    let isSource = typeof option !== 'string';
+    return `<option value="${isSource ? option.id : option}" ${option === selected ? 'selected' : ''}>${isSource ? option.name : option}</option>`;
+  },
+  updateSelect(el, options) {
+    el.innerHTML = this.renderOptions(options);
+  },
+  changeListener() {
+    this.container.addEventListener('change', this.changeHandler, true);
+  },
+  changeHandler(e) {
+    var select = e.target;
+    if(select.classList.contains('styled-inp')){
+      let type = select.dataset.type;
+      apiParams.defaultParams[type] = select.value;
+      if (type !== 'sources') {
+        apiParams.defaultParams.sources = 'all';
+        handlers.getSources();
+      };
+      handlers.getNews();
+    };
   }
 }
 
 var news = {
   container: document.getElementById('news-container'),
+  loadingBar: document.getElementById('news-loading-bar'),
   titleEl: document.getElementById('news-title'),
   render(items) {
     let html = items.map((item, i) => this.template(item, i)).join('');
@@ -110,43 +148,100 @@ var news = {
   },
   setTitle(title) {
     this.titleEl.innerHTML = title;
+  },
+  loading(bool) {
+    let loadingBarClasses = this.loadingBar.classList;
+    let className = 'visible';
+    if (bool) {
+      this.container.innerHTML = '';
+      loadingBarClasses.add(className)
+    } else {
+      loadingBarClasses.remove(className);
+    };
+  },
+  imgIsLoaded(e) {
+    var img = e.target;
+    if(img.classList.contains('news__item-img')){
+      img.parentElement.classList.remove('loading');
+    };
+  },
+  imgLoadListener() {
+    this.container.addEventListener('load', this.imgIsLoaded, true);
   }
 }
 
 var handlers = {
+  queryItem(param, value) {
+    return `${param}=${value}&`;
+  },
   queryConstructor(type, params) {
     news.setTitle(type.name);
-    let query = `${apiParams.url + type.code}?`;
+    let query = '';
     if (typeof params !== 'string') {
-        let startPos = params[3] === 'all' ? 0 : 3;
-        for (let i = startPos; i < params.length; i ++) {
-          let param = params[i];
-          if ((param !== 'all')&&(param !== null)) {
-              query += `${apiParams.filterItems[i].name}=${param}&`;
-          };
+      for (var param in params) {
+        let value = params[param];
+        let sources = apiParams.filterItems[3].name;
+        if (params[sources] === 'all') {
+          if (value !== 'all') query += this.queryItem(param, value);
+        } else if (param === sources) {
+          query += this.queryItem(param, value);
         };
-        
+        if (query === '') query += this.queryItem('category', 'general');
+      };
     } else {
-      query += `q=${params}&`;
+      query += this.queryItem('q', params);
     };
-    return `${query}apiKey=${apiParams.apiKey}`;
+    return `${apiParams.url + type.code}?${query}apiKey=${apiParams.apiKey}`;
   },
   fetcher(url) {
+    errorMsg.hide();
     return fetch(url)
-      .then((response, reject) => {
-        return response.ok ? response.json() : reject(response);
+      .then(response => {
+        if (response.ok) return response.json();
       }).then(res => {
         if (res.sources) {
           return res.sources;
         } else if (res.articles) {
           return res.articles;
         }
-      }).catch( e => {
-        console.error(e.status + ' ' + (e.status === 429 ? 'Requests limit has been reached': 'Nothing to show'));
+      }).catch(e => {
+        let err = apiParams.errorMessages.nothing;
+        if (e.status === 429) err = apiParams.errorMessages.limitReached;
+        if (e.status === 400) err = apiParams.errorMessages.badRequest;
+        errorMsg.show(err);
       });
   },
-  getNews(type, params) {
-    this.fetcher(this.queryConstructor(type, params)).then(newsItems => news.render(newsItems));
+  getNews(type = apiParams.queryTypes[0], params = apiParams.defaultParams) {
+    news.loading(true);
+    this.fetcher(this.queryConstructor(type, params))
+      .then(newsItems => {
+        news.loading(false);
+        news.render(newsItems);
+      }).catch(e => console.log('Cannot get news'));
+  },
+  getSources(type = apiParams.queryTypes[2], params = apiParams.defaultParams) {
+    let sourcesEl = document.getElementById('sources-select');
+    sourcesEl.disabled = true;
+    this.fetcher(this.queryConstructor(type, params))
+      .then(sources => filter.updateSelect(sourcesEl, sources))
+      .catch(e => console.log('Cannot get sources'))
+      .then(sourcesEl.disabled = false);
+  }
+}
+
+var errorMsg = {
+  el: document.getElementById('error-msg'),
+  visibleClass: 'visible',
+  warningClass: 'warn',
+  show(msg) {
+    let classArr = [this.visibleClass];
+    if (msg.isWarn) classArr.push(this.warningClass);
+    this.el.innerHTML = msg.text;
+    this.el.classList.add(...classArr);
+  },
+  hide() {
+    this.el.classList.remove(this.visibleClass, this.warningClass);
+    this.el.innerHTML = '';
   }
 }
 
@@ -154,7 +249,9 @@ var mainInit = {
   init() {
     search.init();
     filter.init(apiParams.filterItems);
-    handlers.getNews(apiParams.queryTypes[0],apiParams.defaultParams);
+    news.imgLoadListener();
+    handlers.getSources();
+    handlers.getNews();
   }
 }
 

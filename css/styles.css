@@ -49,6 +49,14 @@ body {
   background-color: #fff;
   font-size: 20px;
   line-height: 22px;
+  transition: background-color 300ms;
+}
+.styled-inp:focus {
+  border-color: #f42323;
+}
+.styled-inp:disabled {
+  background-color: #bbb;
+  cursor: not-allowed;
 }
 
 /* keyframes */
@@ -77,49 +85,6 @@ body {
   100% {
     transform: rotate(360deg);
   }
-}
-
-
-/* loading styles */
-.news__progress-bar {
-  height: 20px;
-  border-radius: 5px;
-  box-shadow: inset 0 2px 9px  rgba(255,255,255,0.3), inset 0 -2px 6px rgba(0,0,0,0.4);
-  background-color: #f0a3a3;
-  background-image: linear-gradient(to bottom, #f0a3a3, #f42323);
-  position: relative;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 200ms, visibility 200ms;
-}
-.news__progress-bar:before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-  background-image: linear-gradient(
-    -45deg,
-    rgba(255, 255, 255, .2) 25%,
-    transparent 25%,
-    transparent 50%,
-    rgba(255, 255, 255, .2) 50%,
-    rgba(255, 255, 255, .2) 75%,
-    transparent 75%,
-    transparent
-  );
-  z-index: 1;
-  background-size: 50px 50px;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  overflow: hidden;
-}
-.news.loading .news__progress-bar {
-  visibility: visible;
-  opacity: 1;
-}
-.news.loading .news__progress-bar:before {
-  animation: move 2s linear infinite;
 }
 
 /* header */
@@ -169,6 +134,45 @@ body {
 }
 
 /* news */
+.news__progress-bar {
+  height: 20px;
+  border-radius: 5px;
+  box-shadow: inset 0 2px 9px  rgba(255,255,255,0.3), inset 0 -2px 6px rgba(0,0,0,0.4);
+  background-color: #f0a3a3;
+  background-image: linear-gradient(to bottom, #f0a3a3, #f42323);
+  position: relative;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms, visibility 200ms;
+  margin-bottom: -20px;
+}
+.news__progress-bar:before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background-image: linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, .2) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, .2) 50%,
+    rgba(255, 255, 255, .2) 75%,
+    transparent 75%,
+    transparent
+  );
+  z-index: 1;
+  background-size: 50px 50px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  overflow: hidden;
+  animation: move 2s linear infinite;
+}
+.news__progress-bar.visible {
+  visibility: visible;
+  opacity: 1;
+}
 .news__title {
   margin: 0 0 15px;
   font-size: 20px;
@@ -195,6 +199,10 @@ body {
   width: 100%;
   display: block;
   margin: 0 auto;
+  transition: opacity 500ms;
+}
+.loading .news__item-img {
+  opacity: 0;
 }
 .no-img .news__item-img {
   max-width: 150px;
@@ -221,7 +229,35 @@ body {
   animation: imgLoader 1s infinite;
   border-radius: 50%;
 }
+.news__item-title {
+  font-weight: 700;
+  font-size: 20px;
+  margin: 0 0 15px;
+}
+.news__item-descr {
+  font-size: 16px;
+  margin: 0;
+}
+.news__item-author {
+  margin: 15px 0 0;
+  font-size: 14px;
+  color: #bbb;
+}
 
+.error-msg {
+  margin: 50px 0;
+  text-align: center;
+  font-size: 26px;
+  color: #bbb;
+  display: none;
+}
+.error-msg.warn {
+  color: #f42323;
+}
+.error-msg.visible {
+  display: block;
+  animation: fadeIn 500ms forwards;
+}
 
 
 @import url("./responsive.css");
