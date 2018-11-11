@@ -122,8 +122,12 @@ var news = {
   loadingBar: document.getElementById('news-loading-bar'),
   titleEl: document.getElementById('news-title'),
   render(items) {
-    let html = items.map((item, i) => this.template(item, i)).join('');
-    this.container.innerHTML = html;
+    if (items.length) {
+      let html = items.map((item, i) => this.template(item, i)).join('');
+      this.container.innerHTML = html;
+    } else {
+      errorMsg.show(apiParams.errorMessages.nothing);
+    };
   },
   template(item, i) {
     let imgURL = item.urlToImage;
@@ -195,9 +199,19 @@ var handlers = {
   },
   fetcher(url) {
     errorMsg.hide();
+    let err = apiParams.errorMessages.nothing;
     return fetch(url)
       .then(response => {
-        if (response.ok) return response.json();
+        if (response.ok) {
+          let status = response.status;
+          if (status === 200) {
+            return response.json();
+          } else {
+            if (status === 429) err = apiParams.errorMessages.limitReached;
+            if (status === 400) err = apiParams.errorMessages.badRequest;
+            errorMsg.show(err);
+          };
+        };
       }).then(res => {
         if (res.sources) {
           return res.sources;
@@ -205,9 +219,7 @@ var handlers = {
           return res.articles;
         }
       }).catch(e => {
-        let err = apiParams.errorMessages.nothing;
-        if (e.status === 429) err = apiParams.errorMessages.limitReached;
-        if (e.status === 400) err = apiParams.errorMessages.badRequest;
+        console.log(e);
         errorMsg.show(err);
       });
   },

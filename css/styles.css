@@ -258,6 +258,3 @@ body {
   display: block;
   animation: fadeIn 500ms forwards;
 }
-
-
-@import url("./responsive.css");
