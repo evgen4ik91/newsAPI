@@ -104,7 +104,7 @@ var filter = {
     this.container.addEventListener('change', this.changeHandler, true);
   },
   changeHandler(e) {
-    var select = e.target;
+    let select = e.target;
     if(select.classList.contains('styled-inp')){
       let type = select.dataset.type;
       apiParams.defaultParams[type] = select.value;
@@ -164,7 +164,7 @@ var news = {
     };
   },
   imgIsLoaded(e) {
-    var img = e.target;
+    let img = e.target;
     if(img.classList.contains('news__item-img')){
       img.parentElement.classList.remove('loading');
     };
@@ -182,7 +182,7 @@ var handlers = {
     news.setTitle(type.name);
     let query = '';
     if (typeof params !== 'string') {
-      for (var param in params) {
+      for (let param in params) {
         let value = params[param];
         let sources = apiParams.filterItems[3].name;
         if (params[sources] === 'all') {
