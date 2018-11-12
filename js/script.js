@@ -83,14 +83,14 @@ class Handlers {
         let value = params[param];
         let sources = apiParams.filterItems[3].name;
         if (params[sources] === 'all') {
-          if (value !== 'all') query += this.queryItem(param, value);
-          if (query === '') query += this.queryItem('category', 'general');
+          if (value !== 'all') query = `${query}${this.queryItem(param, value)}`;
         } else if (param === sources) {
-          query += this.queryItem(param, value);
+          query = `${query}${this.queryItem(param, value)}`;
         };
       };
+      if (query === '') query = `${query}${this.queryItem('category', 'general')}`;
     } else {
-      query += this.queryItem('q', params);
+      query = `${query}${this.queryItem('q', params)}`;
     };
     return `${apiParams.url}${type.code}?${query}apiKey=${apiParams.apiKey}`;
   }
