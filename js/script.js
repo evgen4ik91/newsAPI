@@ -94,47 +94,47 @@ class Handlers {
     };
     return `${apiParams.url}${type.code}?${query}apiKey=${apiParams.apiKey}`;
   }
-  fetcher(url) {
+  async fetcher(url) {
     errorMsg.hide();
     let err = apiParams.errorMessages.nothing;
-    return fetch(url)
-      .then(response => {
-        if (response.ok) {
-          let status = response.status;
-          if (status === 200) {
-            return response.json();
-          } else {
-            if (status === 429) err = apiParams.errorMessages.limitReached;
-            if (status === 400) err = apiParams.errorMessages.badRequest;
-            errorMsg.show(err);
-          };
+    try {
+      let response = await fetch(url);
+      if (response.ok) {
+        let status = response.status;
+        if (status === 200) {
+          response = await response.json();
+        } else {
+          if (status === 429) err = apiParams.errorMessages.limitReached;
+          if (status === 400) err = apiParams.errorMessages.badRequest;
+          errorMsg.show(err);
         };
-      }).then(res => {
-        if (res.sources) {
-          return res.sources;
-        } else if (res.articles) {
-          return res.articles;
-        }
-      }).catch(e => {
-        console.log(e);
-        errorMsg.show(err);
-      });
+      };
+      return response.articles || response.sources;
+    } catch (e) {
+      console.log(e);
+      errorMsg.show(err);
+    }
   }
-  getNews(type = apiParams.queryTypes[0], params = apiParams.defaultParams) {
+  async getNews(type = apiParams.queryTypes[0], params = apiParams.defaultParams) {
     news.loading(true);
-    this.fetcher(this.queryConstructor(type, params))
-      .then(newsItems => {
-        news.loading(false);
-        news.render(newsItems);
-      }).catch(e => console.log('Cannot get news'));
+    try {
+      let newsItems = await this.fetcher(this.queryConstructor(type, params));
+      news.loading(false);
+      news.render(newsItems);
+    } catch (e) {
+      console.log('Cannot get news')
+    }
   }
-  getSources(type = apiParams.queryTypes[2], params = apiParams.defaultParams) {
+  async getSources(type = apiParams.queryTypes[2], params = apiParams.defaultParams) {
     let sourcesEl = document.getElementById('sources-select');
     sourcesEl.disabled = true;
-    this.fetcher(this.queryConstructor(type, params))
-      .then(sources => filter.updateSelect(sourcesEl, sources))
-      .catch(e => console.log('Cannot get sources'))
-      .then(sourcesEl.disabled = false);
+    try {
+      let sources = await this.fetcher(this.queryConstructor(type, params))
+      filter.updateSelect(sourcesEl, sources);
+      sourcesEl.disabled = false;
+    } catch (e) {
+      console.log('Cannot get sources')
+    }
   }
 }
 
