@@ -1,0 +1,31 @@
+{
+  "name": "newsapi",
+  "version": "1.0.0",
+  "description": "hometask",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "whatwg-fetch": "^3.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "babel-loader": "^8.0.4",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "scripts": {
+    "webpack": "webpack",
+    "start": "http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evgen4ik91/newsAPI.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evgen4ik91/newsAPI/issues"
+  },
+  "homepage": "https://github.com/evgen4ik91/newsAPI#readme"
+}

@@ -1,2 +1,7 @@
+.no
 .vscode/
 .DS_Store
+package-lock.json
+/node_modules
+js/bundle.js.map
+js/bundle.js

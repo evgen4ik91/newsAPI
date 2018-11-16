@@ -1,3 +1,5 @@
+import '@babel/polyfill';
+import 'whatwg-fetch';
 let apiParams = {
   apiKey: '5a67f9304faa41e5b457f84bd54c0a20',
   url: 'https://newsapi.org/v2/',
@@ -129,7 +131,7 @@ class Handlers {
     let sourcesEl = document.getElementById('sources-select');
     sourcesEl.disabled = true;
     try {
-      let sources = await this.fetcher(this.queryConstructor(type, params))
+      let sources = await this.fetcher(this.queryConstructor(type, params));
       filter.updateSelect(sourcesEl, sources);
       sourcesEl.disabled = false;
     } catch (e) {
