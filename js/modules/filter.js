@@ -1,3 +1,5 @@
+import { apiParams } from '../params';
+
 export class Filter {
 	constructor(el) {
 	  this.container = el;

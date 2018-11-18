@@ -1,12 +1,12 @@
 import '@babel/polyfill';
 import 'whatwg-fetch';
 
-import './params';
-import './modules/error';
-import './modules/handlers';
-import './modules/search';
-import './modules/filter';
-import './modules/news';
+import { apiParams } from './params';
+import { ErrorMsg } from './modules/error';
+import { Handlers } from './modules/handlers';
+import { Search } from './modules/search';
+import { Filter } from './modules/filter';
+import { News } from './modules/news';
 
 let errorMsg = new ErrorMsg(document.getElementById('error-msg'));
 let handlers = new Handlers();

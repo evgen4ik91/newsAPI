@@ -1,3 +1,5 @@
+import { apiParams } from '../params';
+
 export class Handlers {
 	queryItem(param, value) {
 	  return `${param}=${value}&`;
