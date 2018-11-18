@@ -1,4 +1,4 @@
-export class Search {
+class Search {
 	constructor(el) {
 	  this.el = el;
 	  this.keyTimeout = null;
@@ -17,3 +17,5 @@ export class Search {
 	  }, 1000, elemVal);
 	}
 }
+
+export default new Search(document.getElementById('search-input'));

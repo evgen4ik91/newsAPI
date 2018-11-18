@@ -1,6 +1,6 @@
 import { apiParams } from '../params';
 
-export class Filter {
+class Filter {
 	constructor(el) {
 	  this.container = el;
 	}
@@ -47,3 +47,5 @@ export class Filter {
 	  };
 	}
 }
+
+export default new Filter(document.getElementById('filter-container'));

@@ -1,4 +1,4 @@
-export class News {
+class News {
 	constructor(el) {
 	  this.container = el;
 	  this.loadingBar = document.getElementById('news-loading-bar');
@@ -56,3 +56,5 @@ export class News {
 	  this.container.addEventListener('load', this.imgIsLoaded, true);
 	}
 }
+
+export default new News(document.getElementById('news-container'));

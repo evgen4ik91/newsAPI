@@ -1,4 +1,4 @@
-export class ErrorMsg {
+class ErrorMsg {
 	constructor(el) {
 	  this.el = el;
 	  this.visibleClass = 'visible';
@@ -15,3 +15,5 @@ export class ErrorMsg {
 	  this.el.innerHTML = '';
 	}
 }
+
+export default new ErrorMsg(document.getElementById('error-msg'));

@@ -1,6 +1,6 @@
 import { apiParams } from '../params';
 
-export class Handlers {
+class Handlers {
 	queryItem(param, value) {
 	  return `${param}=${value}&`;
 	}
@@ -66,3 +66,5 @@ export class Handlers {
 	  }
 	}
 }
+
+export default new Handlers();
