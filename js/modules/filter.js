@@ -1,4 +1,5 @@
 import { apiParams } from '../params';
+import handlers from './handlers';
 
 class Filter {
 	constructor(el) {

@@ -1,3 +1,6 @@
+import { apiParams } from '../params';
+import handlers from './handlers';
+
 class Search {
 	constructor(el) {
 	  this.el = el;

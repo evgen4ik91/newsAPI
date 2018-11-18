@@ -1,4 +1,7 @@
 import { apiParams } from '../params';
+import errorMsg from './error';
+import news from './news';
+import filter from './filter';
 
 class Handlers {
 	queryItem(param, value) {
