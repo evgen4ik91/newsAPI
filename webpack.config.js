@@ -2,7 +2,13 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    entry: './js/main.js',
+    entry: {
+        main: [
+            'whatwg-fetch',
+            '@babel/polyfill',
+            './js/main.js',
+        ]
+    },
     output: {
         path: path.resolve(__dirname, 'js'),
         filename: 'bundle.js'
@@ -28,6 +34,10 @@ module.exports = {
             }
         ]
     },
+    optimization: {
+        minimize: true
+    },
+    mode: 'production',
     stats: {
         colors: true
     },

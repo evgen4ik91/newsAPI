@@ -1,6 +1,3 @@
-import '@babel/polyfill';
-import 'whatwg-fetch';
-
 import {apiParams} from './params';
 import handlers from './modules/handlers';
 import search from './modules/search';
