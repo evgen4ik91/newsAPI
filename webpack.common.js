@@ -1,5 +1,6 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const path = require('path');
@@ -40,12 +41,15 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract(
-                    {
-                        fallback: 'style-loader',
-                        use: ['css-loader']
+                use: [
+                  {
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {
+                      publicPath: distPath
                     }
-                )
+                  },
+                  'css-loader'
+                ]
             },
             {
                 test: /\.(jpg|png)$/,
@@ -64,7 +68,9 @@ module.exports = {
           template: './src/index.html',
           filename: 'index.html'
         }),
-        new ExtractTextPlugin({filename: '[name].min.css'}),
+        new MiniCssExtractPlugin({
+            filename: "[name].min.css",
+        }),
         new CopyWebpackPlugin([
           {from:'./src/img',to:'img'}
         ])
