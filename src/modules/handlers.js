@@ -1,6 +1,5 @@
 import { apiParams } from '../params';
 import errorMsg from './error';
-import news from './news';
 import filter from './filter';
 
 class Handlers {
@@ -8,7 +7,7 @@ class Handlers {
 	  return `${param}=${value}&`;
 	}
 	queryConstructor(type, params) {
-	  news.setTitle(type.name);
+	  //news.setTitle(type.name);
 	  let query = '';
 	  if (typeof params !== 'string') {
 		for (let param in params) {
@@ -48,11 +47,11 @@ class Handlers {
 	  }
 	}
 	async getNews(type = apiParams.queryTypes[0], params = apiParams.defaultParams) {
-	  news.loading(true);
+	  //news.loading(true);
 	  try {
 		let newsItems = await this.fetcher(this.queryConstructor(type, params));
-		news.loading(false);
-		news.render(newsItems);
+		//news.loading(false);
+		//news.render(newsItems);
 	  } catch (e) {
 		console.log('Cannot get news')
 	  }
