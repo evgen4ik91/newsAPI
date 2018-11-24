@@ -4,5 +4,6 @@ Hometask
 Installation:
 npm i
 
-Build script:
-npm run webpack
+Build prod version: npm run build
+
+Start dev server: npm run start
