@@ -44,7 +44,7 @@ class Filter {
 		  apiParams.defaultParams.sources = 'all';
 		  handlers.getSources();
 		};
-		handlers.getNews();
+		news.getNews();
 	  };
 	}
 }

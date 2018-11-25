@@ -46,16 +46,7 @@ class Handlers {
 		errorMsg.show(err);
 	  }
 	}
-	async getNews(type = apiParams.queryTypes[0], params = apiParams.defaultParams) {
-	  //news.loading(true);
-	  try {
-		let newsItems = await this.fetcher(this.queryConstructor(type, params));
-		//news.loading(false);
-		//news.render(newsItems);
-	  } catch (e) {
-		console.log('Cannot get news')
-	  }
-	}
+	
 	async getSources(type = apiParams.queryTypes[2], params = apiParams.defaultParams) {
 	  let sourcesEl = document.getElementById('sources-select');
 	  sourcesEl.disabled = true;
@@ -66,6 +57,29 @@ class Handlers {
 	  } catch (e) {
 		console.log('Cannot get sources')
 	  }
+	}
+	getNewsBtnListener() {
+		let context = this;
+		document.getElementById('show-news').addEventListener('click', e => {
+			let loadingClass = 'loading';
+			let thisBtn = e.target;
+			thisBtn.classList.add(loadingClass);
+			thisBtn.innerHTML = 'Loading...';
+			import(/* webpackChunkName: "news" */ '../news')
+				.then(module => {
+					var news = module.default;
+					thisBtn.parentNode.classList.add('hidden');
+					news.imgLoadListener();
+					news.getNews();
+				}).catch(e => {
+					console.log(e);
+					thisBtn.innerHTML = 'Loading failed';
+					setTimeout(()=>{
+						thisBtn.classList.remove(loadingClass);
+						thisBtn.innerHTML = 'Try again';
+					}, 3000);
+				});
+		});
 	}
 }
 

@@ -8,5 +8,6 @@ search.init();
 filter.init(apiParams.filterItems);
 
 handlers.getSources();
+handlers.getNewsBtnListener();
 
 import "./css/styles.css";

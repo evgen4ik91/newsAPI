@@ -12,11 +12,9 @@ module.exports = {
             'whatwg-fetch',
             '@babel/polyfill',
             './src/main.js'
-        ],
-        news: './src/news.js'
+        ]
     },
     output: {
-        publicPath: distPath,
         path: path.resolve(__dirname + distPath),
         filename: '[name].bundle.js'
     },
@@ -36,7 +34,8 @@ module.exports = {
                                 }
                             }
                         ]
-                    ]
+                    ],
+                    plugins: ['@babel/syntax-dynamic-import']
                 }
             },
             {
@@ -44,9 +43,6 @@ module.exports = {
                 use: [
                   {
                     loader: MiniCssExtractPlugin.loader,
-                    options: {
-                      publicPath: distPath
-                    }
                   },
                   'css-loader'
                 ]

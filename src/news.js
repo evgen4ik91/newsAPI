@@ -1,6 +1,5 @@
-import news from './modules/news';
-
-news.imgLoadListener();
-handlers.getNews();
-
+import News from './modules/news';
 import "./css/news.css";
+
+export default News;
+
