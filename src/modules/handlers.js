@@ -10,7 +10,7 @@ class Handlers {
 	  return `${param}=${value}&`;
 	}
 	queryConstructor(type, params) {
-	  //news.setTitle(type.name);
+		if (this.newsModule != null) this.newsModule.setTitle(type.name);
 	  let query = '';
 	  if (typeof params !== 'string') {
 		for (let param in params) {
@@ -34,13 +34,13 @@ class Handlers {
 	  try {
 		let response = await fetch(url);
 		if (response.ok) {
-		  let status = response.status;
+			let status = response.status;
 		  if (status === 200) {
-			response = await response.json();
+				response = await response.json();
 		  } else {
-			if (status === 429) err = apiParams.errorMessages.limitReached;
-			if (status === 400) err = apiParams.errorMessages.badRequest;
-			errorMsg.show(err);
+				if (status === 429) err = apiParams.errorMessages.limitReached;
+				if (status === 400) err = apiParams.errorMessages.badRequest;
+				errorMsg.show(err);
 		  };
 		};
 		return response.articles || response.sources;

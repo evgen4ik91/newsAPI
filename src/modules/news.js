@@ -1,5 +1,5 @@
 import { apiParams } from '../params';
-import handlers from './handlers';
+import errorMsg from './error';
 
 class News {
 	constructor(el) {
@@ -9,10 +9,10 @@ class News {
 	}
 	render(items) {
 	  if (items.length) {
-		let html = items.map((item, i) => this.template(item, i)).join('');
-		this.container.innerHTML = html;
+			let html = items.map((item, i) => this.template(item, i)).join('');
+			this.container.innerHTML = html;
 	  } else {
-		errorMsg.show(apiParams.errorMessages.nothing);
+			errorMsg.show(apiParams.errorMessages.nothing);
 	  };
 	}
 	template(item, i) {
@@ -43,16 +43,16 @@ class News {
 	  let loadingBarClasses = this.loadingBar.classList;
 	  let className = 'visible';
 	  if (bool) {
-		this.container.innerHTML = '';
-		loadingBarClasses.add(className)
+			this.container.innerHTML = '';
+			loadingBarClasses.add(className)
 	  } else {
-		loadingBarClasses.remove(className);
+			loadingBarClasses.remove(className);
 	  };
 	}
 	imgIsLoaded(e) {
 	  let img = e.target;
 	  if(img.classList.contains('news__item-img')){
-		img.parentElement.classList.remove('loading');
+			img.parentElement.classList.remove('loading');
 	  };
 	}
 	imgLoadListener() {
