@@ -75,7 +75,6 @@ class Handlers {
 	  }
 	}
 	getNewsBtnListener() {
-		let context = this;
 		document.getElementById('show-news').addEventListener('click', e => {
 			let loadingClass = 'loading';
 			let thisBtn = e.target;
@@ -86,7 +85,7 @@ class Handlers {
 					this.newsModule = module.default;
 					thisBtn.parentNode.classList.add('hidden');
 					this.newsModule.imgLoadListener();
-					context.getNews();
+					this.getNews();
 				}).catch(e => {
 					console.log(e);
 					thisBtn.innerHTML = 'Loading failed';
