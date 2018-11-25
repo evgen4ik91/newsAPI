@@ -147,8 +147,26 @@ body {
   display: block;
   animation: fadeIn 500ms forwards;
 }
-
-
+/* show news */
+.show-news {
+  padding: 30px 0;
+  text-align: center;
+}
+.show-news__btn {
+  border-radius: 5px;
+  border: none;
+  background-color: #f42323;
+  padding: 10px;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 300ms;
+  width: 100%;
+  max-width: 200px;
+}
+.show-news__btn:hover {
+  background-color: #f0a3a3;
+}
 /* responsive */
 @media screen and (max-width: 767px) {
   .filter__item {
