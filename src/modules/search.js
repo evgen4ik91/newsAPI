@@ -1,4 +1,5 @@
 import { apiParams } from '../params';
+import handlers from './handlers';
 
 class Search {
 	constructor(el) {
@@ -14,7 +15,7 @@ class Search {
 	  if (this.keyTimeout !== null) clearTimeout(this.keyTimeout);
 	  this.keyTimeout = setTimeout(() => {
 		if (elemVal.length >= 3) {
-		  news.getNews(apiParams.queryTypes[1],elemVal);
+		  handlers.getNews(apiParams.queryTypes[1],elemVal);
 		};
 	  }, 1000, elemVal);
 	}

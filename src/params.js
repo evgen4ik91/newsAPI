@@ -49,6 +49,10 @@ export let apiParams = {
 	  badRequest: {
 		isWarn: true,
 		text: 'Bad request'
+	  },
+	  newsNotLoaded: {
+		isWarn: true,
+		text: 'News module is not loaded'
 	  }
 	}
 }

@@ -1,5 +1,5 @@
-import News from './modules/news';
+import news from './modules/news';
 import "./css/news.css";
 
-export default News;
+export default news;
 

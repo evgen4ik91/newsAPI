@@ -58,16 +58,6 @@ class News {
 	imgLoadListener() {
 	  this.container.addEventListener('load', this.imgIsLoaded, true);
 	}
-	async getNews(type = apiParams.queryTypes[0], params = apiParams.defaultParams) {
-	  this.loading(true);
-	  try {
-			let newsItems = await handlers.fetcher(handlers.queryConstructor(type, params));
-			this.loading(false);
-			this.render(newsItems);
-	  } catch (e) {
-			console.log('Cannot get news')
-	  }
-	}
 }
 
 export default new News(document.getElementById('news-container'));

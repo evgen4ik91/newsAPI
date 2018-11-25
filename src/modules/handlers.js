@@ -3,6 +3,9 @@ import errorMsg from './error';
 import filter from './filter';
 
 class Handlers {
+	constructor () {
+		this.newsModule = null;
+	}
 	queryItem(param, value) {
 	  return `${param}=${value}&`;
 	}
@@ -46,7 +49,20 @@ class Handlers {
 		errorMsg.show(err);
 	  }
 	}
-	
+	async getNews(type = apiParams.queryTypes[0], params = apiParams.defaultParams) {
+		if (this.newsModule != null) {
+			this.newsModule.loading(true);
+			try {
+				let newsItems = await this.fetcher(this.queryConstructor(type, params));
+				this.newsModule.loading(false);
+				this.newsModule.render(newsItems);
+			} catch (e) {
+				console.log('Cannot get news')
+			}
+		} else {
+			errorMsg.show(apiParams.errorMessages.newsNotLoaded);
+		}
+	}
 	async getSources(type = apiParams.queryTypes[2], params = apiParams.defaultParams) {
 	  let sourcesEl = document.getElementById('sources-select');
 	  sourcesEl.disabled = true;
@@ -67,10 +83,10 @@ class Handlers {
 			thisBtn.innerHTML = 'Loading...';
 			import(/* webpackChunkName: "news" */ '../news')
 				.then(module => {
-					var news = module.default;
+					this.newsModule = module.default;
 					thisBtn.parentNode.classList.add('hidden');
-					news.imgLoadListener();
-					news.getNews();
+					this.newsModule.imgLoadListener();
+					context.getNews();
 				}).catch(e => {
 					console.log(e);
 					thisBtn.innerHTML = 'Loading failed';
