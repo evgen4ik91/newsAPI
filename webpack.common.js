@@ -74,7 +74,4 @@ module.exports = {
     stats: {
         colors: true
     },
-    optimization: {
-        minimize: true
-    },
  };
