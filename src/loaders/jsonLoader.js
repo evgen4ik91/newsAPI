@@ -10,17 +10,20 @@ module.exports = function(content, map, meta) {
 	let filePath = this.resourcePath;
 	let fileName = filePath.slice(filePath.lastIndexOf('/'));
 
+	if (!options) {
+		this.emitFile(fileName, content);
+		return content;
+	}
+
 	let contentObj = JSON.parse(content);
 
-	if (options) {
-		for (key in contentObj) {
-			let val = contentObj[key];
-			if ((options.invertBool)&&(typeof val === 'boolean')) {
-				contentObj[key] = val ? false : true;
-			}
-			if ((options.toUppercase)&&(typeof val === 'string')) {
-				contentObj[key] = val.toUpperCase();
-			}
+	for (key in contentObj) {
+		let val = contentObj[key];
+		if ((options.invertBool)&&(typeof val === 'boolean')) {
+			contentObj[key] = !val;
+		}
+		if ((options.toUppercase)&&(typeof val === 'string')) {
+			contentObj[key] = val.toUpperCase();
 		}
 	}
 
