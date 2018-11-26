@@ -1,0 +1,7 @@
+{
+	"type": "object",
+	"properties": {
+	  "invertBool": {"type": "boolean"},
+	  "toUppercase": {"type": "boolean"}
+	}
+}
