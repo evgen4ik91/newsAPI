@@ -10,4 +10,6 @@ filter.init(apiParams.filterItems);
 handlers.getSources();
 handlers.getNewsBtnListener();
 
-import "./css/styles.css";
+import './css/styles.css';
+
+import './test.json';

@@ -54,6 +54,18 @@ module.exports = {
             {
                 test: /\.svg$/,
                 loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
+            },
+            {
+                test: /\.json$/,
+                use: [
+                    {
+                        loader: path.resolve('./src/loaders/jsonLoader.js'),
+                        options: {
+                            invertBool: true,
+                            toUppercase: true,
+                        }
+                    }
+                ]
             }
         ]
     },
