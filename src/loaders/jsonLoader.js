@@ -5,8 +5,6 @@ const schema = require('./options.json');
 module.exports = function(content, map, meta) {
 	const options = loaderUtils.getOptions(this) || null;
 
-	validateOptions(schema, options, 'JSON loader');
-
 	let filePath = this.resourcePath;
 	let fileName = filePath.slice(filePath.lastIndexOf('/'));
 
@@ -14,6 +12,8 @@ module.exports = function(content, map, meta) {
 		this.emitFile(fileName, content);
 		return content;
 	}
+
+	validateOptions(schema, options, 'JSON loader');
 
 	let contentObj = JSON.parse(content);
 
