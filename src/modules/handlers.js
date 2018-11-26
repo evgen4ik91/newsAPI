@@ -85,7 +85,7 @@ class Handlers {
 					this.newsModule = module.default;
 					thisBtn.parentNode.classList.add('hidden');
 					this.newsModule.imgLoadListener();
-					this.getNews();
+					this.getNews(undefined, apiParams.defaultParams);
 				}).catch(e => {
 					console.log(e);
 					thisBtn.innerHTML = 'Loading failed';
