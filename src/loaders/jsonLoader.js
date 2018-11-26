@@ -1,3 +1,4 @@
+const path = require('path');
 const loaderUtils = require('loader-utils');
 const validateOptions = require('schema-utils');
 const schema = require('./options.json');
@@ -5,8 +6,7 @@ const schema = require('./options.json');
 module.exports = function(content, map, meta) {
 	const options = loaderUtils.getOptions(this) || null;
 
-	let filePath = this.resourcePath;
-	let fileName = filePath.slice(filePath.lastIndexOf('/'));
+	let fileName = path.basename(this.resourcePath);
 
 	if (!options) {
 		this.emitFile(fileName, content);
