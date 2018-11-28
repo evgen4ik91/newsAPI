@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>newsAPI</title>
+    <link rel="stylesheet" type="text/css" href="./main.min.css">
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <h1 class="header__logo">newsAPI</h1>
+      </div>
+    </header>
+    <section class="content">
+      <div class="container">
+        <div class="search">
+          <input id="search-input" class="search__input" type="search" placeholder="Search..." />
+        </div>
+        <div class="row filter" id="filter-container"></div>
+
+        <div class="show-news">
+          <button id="show-news" class="show-news__btn">Show news</button>
+        </div>
+        <div class="news">
+          <h3 class="news__title" id="news-title"></h3>
+          <div class="news__progress-bar" id="news-loading-bar"></div>
+          <p class="error-msg" id="error-msg"></p>
+          <div id="news-container"></div>
+        </div>
+      </div>
+    </section>
+    <script type="text/javascript" src="./main.bundle.js"></script>
+  </body>
+</html>
