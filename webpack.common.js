@@ -64,7 +64,8 @@ module.exports = {
                             toUppercase: true,
                         }
                     }
-                ]
+                ],
+                type: 'javascript/auto'
             }
         ]
     },
