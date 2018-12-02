@@ -1,5 +1,6 @@
 import { apiParams } from '../params';
 import handlers from './handlers';
+import filterTpl from '../views/filter';
 
 class Filter {
 	constructor(el) {
@@ -10,24 +11,15 @@ class Filter {
 	  this.changeListener();
 	}
 	render(items) {
-	  let html = items.map(item => this.template(item)).join('');
+	  let html = items.map(item => {
+			let selectedOption = apiParams.defaultParams[item.name];
+			let options = this.renderOptions(item.list, selectedOption);
+			return filterTpl.template(item.name, options);
+		}).join('');
 	  this.container.innerHTML = html;
 	}
-	template(item) {
-	  let selectedOption = apiParams.defaultParams[item.name];
-	  let options = this.renderOptions(item.list, selectedOption);
-	  return `
-		<div class="col filter__item">
-		  <select class="styled-inp" id="${item.name}-select" data-type="${item.name}">${options}</select>
-		</div>
-	  `;
-	}
 	renderOptions(options, selectedOption) {
-	  return this.optionTemplate('all', selectedOption) + options.map(option => this.optionTemplate(option, selectedOption)).join('');
-	}
-	optionTemplate(option, selected = false) {
-	  let isSource = typeof option !== 'string';
-	  return `<option value="${isSource ? option.id : option}" ${option === selected ? 'selected' : ''}>${isSource ? option.name : option}</option>`;
+	  return filterTpl.option('all', selectedOption) + options.map(option => filterTpl.option(option, selectedOption)).join('');
 	}
 	updateSelect(el, options) {
 	  el.innerHTML = this.renderOptions(options);
@@ -38,13 +30,13 @@ class Filter {
 	changeHandler(e) {
 	  let select = e.target;
 	  if(select.classList.contains('styled-inp')){
-		let type = select.dataset.type;
-		apiParams.defaultParams[type] = select.value;
-		if (type !== 'sources') {
-		  apiParams.defaultParams.sources = 'all';
-		  handlers.getSources();
-		};
-		handlers.getNews();
+			let type = select.dataset.type;
+			apiParams.defaultParams[type] = select.value;
+			if (type !== 'sources') {
+				apiParams.defaultParams.sources = 'all';
+				handlers.getSources();
+			};
+			handlers.getNews();
 	  };
 	}
 }

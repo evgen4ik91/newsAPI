@@ -3,14 +3,14 @@ export let apiParams = {
 	url: 'https://newsapi.org/v2/',
 	queryTypes: [
 	  {
-		name: 'Top headlines',
-		code: 'top-headlines'
+			name: 'Top headlines',
+			code: 'top-headlines'
 	  },{
-		name: 'Search',
-		code: 'everything'
+			name: 'Search',
+			code: 'everything'
 	  },{
-		name: 'Sources',
-		code: 'sources'
+			name: 'Sources',
+			code: 'sources'
 	  }
 	],
 	defaultParams: {
@@ -21,38 +21,38 @@ export let apiParams = {
 	},
 	filterItems: [
 	  {
-		name: 'country',
-		list: ['ae', 'ar', 'at', 'au', 'be', 'bg', 'br', 'ca', 'ch', 'cn', 'co', 'cu', 'cz', 'de', 'eg', 'fr', 'gb', 'gr', 'hk', 'hu', 'id', 'ie', 'il', 'in', 'it', 'jp', 'kr', 'lt', 'lv', 'ma', 'mx', 'my', 'ng', 'nl', 'no', 'nz', 'ph', 'pl', 'pt', 'ro', 'rs', 'ru', 'sa', 'se', 'sg', 'si', 'sk', 'th', 'tr', 'tw', 'ua', 'us', 've', 'za']
+			name: 'country',
+			list: ['ae', 'ar', 'at', 'au', 'be', 'bg', 'br', 'ca', 'ch', 'cn', 'co', 'cu', 'cz', 'de', 'eg', 'fr', 'gb', 'gr', 'hk', 'hu', 'id', 'ie', 'il', 'in', 'it', 'jp', 'kr', 'lt', 'lv', 'ma', 'mx', 'my', 'ng', 'nl', 'no', 'nz', 'ph', 'pl', 'pt', 'ro', 'rs', 'ru', 'sa', 'se', 'sg', 'si', 'sk', 'th', 'tr', 'tw', 'ua', 'us', 've', 'za']
 	  },
 	  {
-		name: 'language',
-		list: ['ar', 'de', 'en', 'es', 'fr', 'he', 'it', 'nl', 'no', 'pt', 'ru', 'se', 'ud', 'zh']
+			name: 'language',
+			list: ['ar', 'de', 'en', 'es', 'fr', 'he', 'it', 'nl', 'no', 'pt', 'ru', 'se', 'ud', 'zh']
 	  },
 	  {
-		name: 'category',
-		list: ['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology']
+			name: 'category',
+			list: ['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology']
 	  },
 	  {
-		name: 'sources',
-		list: []
+			name: 'sources',
+			list: []
 	  }
 	],
 	errorMessages: {
 	  nothing: {
-		isWarn: false,
-		text: 'Nothing to show'
+			isWarn: false,
+			text: 'Nothing to show'
 	  },
 	  limitReached: {
-		isWarn: true,
-		text: 'Requests limit has been reached'
+			isWarn: true,
+			text: 'Requests limit has been reached'
 	  },
 	  badRequest: {
-		isWarn: true,
-		text: 'Bad request'
+			isWarn: true,
+			text: 'Bad request'
 	  },
 	  newsNotLoaded: {
-		isWarn: true,
-		text: 'News module is not loaded'
+			isWarn: true,
+			text: 'News module is not loaded'
 	  }
 	}
 }
