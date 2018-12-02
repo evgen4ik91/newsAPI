@@ -1,5 +1,4 @@
 import { apiParams } from '../params';
-import errorMsg from './error';
 
 class News {
 	constructor(el) {
@@ -8,12 +7,8 @@ class News {
 	  this.titleEl = document.getElementById('news-title');
 	}
 	render(items) {
-	  if (items.length) {
-			let html = items.map((item, i) => this.template(item, i)).join('');
-			this.container.innerHTML = html;
-	  } else {
-			errorMsg.show(apiParams.errorMessages.nothing);
-	  };
+		let html = items.map((item, i) => this.template(item, i)).join('');
+		this.container.innerHTML = html;
 	}
 	template(item, i) {
 	  let imgURL = item.urlToImage;

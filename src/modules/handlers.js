@@ -1,10 +1,23 @@
 import { apiParams } from '../params';
-import errorMsg from './error';
 import filter from './filter';
 
 class Handlers {
 	constructor () {
 		this.newsModule = null;
+		this.errModule = null;
+	}
+	showError(msg) {
+		if (this.errModule == null) {
+			import(/* webpackChunkName: "error" */ './error')
+				.then(module => {
+					this.errModule = module.default;
+					this.errModule.show(msg);
+				}).catch(e => {
+					console.log(e);
+				});
+		} else {
+			this.errModule.show(msg);
+		}
 	}
 	queryItem(param, value) {
 	  return `${param}=${value}&`;
@@ -29,24 +42,25 @@ class Handlers {
 	  return `${apiParams.url}${type.code}?${query}apiKey=${apiParams.apiKey}`;
 	}
 	async fetcher(url) {
-	  errorMsg.hide();
+	  if (this.errModule != null) this.errModule.hide();
 	  let err = apiParams.errorMessages.nothing;
 	  try {
-		let response = await fetch(url);
-		if (response.ok) {
-			let status = response.status;
-		  if (status === 200) {
-				response = await response.json();
-		  } else {
-				if (status === 429) err = apiParams.errorMessages.limitReached;
-				if (status === 400) err = apiParams.errorMessages.badRequest;
-				errorMsg.show(err);
-		  };
-		};
-		return response.articles || response.sources;
+			let response = await fetch(url);
+			if (response.ok) {
+				let status = response.status;
+				if (status === 200) {
+					response = await response.json();
+				} else {
+					if (status === 429) err = apiParams.errorMessages.limitReached;
+					if (status === 400) err = apiParams.errorMessages.badRequest;
+					
+					this.showError(err);
+				};
+			};
+			return response.articles || response.sources;
 	  } catch (e) {
-		console.log(e);
-		errorMsg.show(err);
+			console.log(e);
+			this.showError(err);
 	  }
 	}
 	async getNews(type = apiParams.queryTypes[0], params = apiParams.defaultParams) {
@@ -55,12 +69,16 @@ class Handlers {
 			try {
 				let newsItems = await this.fetcher(this.queryConstructor(type, params));
 				this.newsModule.loading(false);
-				this.newsModule.render(newsItems);
+				if (newsItems.length) {
+					this.newsModule.render(newsItems);
+				} else {
+					this.showError(apiParams.errorMessages.nothing);
+				}
 			} catch (e) {
 				console.log('Cannot get news')
 			}
 		} else {
-			errorMsg.show(apiParams.errorMessages.newsNotLoaded);
+			this.showError(apiParams.errorMessages.newsNotLoaded);
 		}
 	}
 	async getSources(type = apiParams.queryTypes[2], params = apiParams.defaultParams) {
