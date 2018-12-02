@@ -13,7 +13,7 @@ class Handlers {
 					this.errModule = module.default;
 					this.errModule.show(msg);
 				}).catch(e => {
-					console.log(e);
+					alert(msg.text);
 				});
 		} else {
 			this.errModule.show(msg);
@@ -53,7 +53,6 @@ class Handlers {
 				} else {
 					if (status === 429) err = apiParams.errorMessages.limitReached;
 					if (status === 400) err = apiParams.errorMessages.badRequest;
-					
 					this.showError(err);
 				};
 			};
