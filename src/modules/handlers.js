@@ -1,10 +1,11 @@
 import { apiParams } from '../params';
 import filter from './filter';
-import fetchFactory from './fetcher';
+import Fetcher from './fetcher';
 import errorModule from './errorLazy';
 
-const fetchSources = new fetchFactory(apiParams.queryTypes[2].code);
-const fetchNews = new fetchFactory(apiParams.queryTypes[0].code);
+const fetchNewsFilter = new Fetcher(apiParams.queryTypes[0].code);
+const fetchNewsSearch = new Fetcher(apiParams.queryTypes[1].code);
+const fetchSources = new Fetcher(apiParams.queryTypes[2].code);
 
 class Handlers {
 	constructor () {
@@ -15,7 +16,7 @@ class Handlers {
 			if (this.newsModule == null) await this.getNewsModule();
 			this.newsModule.loading(true);
 			this.newsModule.setTitle(type.name);
-			let newsItems = await fetchNews(params);
+			let newsItems = type.code === apiParams.queryTypes[0].code ? await fetchNewsFilter(params) : await fetchNewsSearch(params);
 			this.newsModule.loading(false);
 			if (newsItems.length) {
 				this.newsModule.render(newsItems);
@@ -23,10 +24,10 @@ class Handlers {
 				errorModule.show(apiParams.errorMessages.nothing);
 			}
 		} catch (e) {
-			console.log('Cannot get news');
+			console.log('Cannot get news', e);
 		}
 	}
-	async getSources(type = apiParams.queryTypes[2], params = apiParams.defaultParams) {
+	async getSources(params = apiParams.defaultParams) {
 		let sourcesEl = document.getElementById('sources-select');
 		sourcesEl.disabled = true;
 		try {
@@ -37,11 +38,16 @@ class Handlers {
 			console.log('Cannot get sources');
 		}
 	}
-	getNewsModule() {
-		return import(/* webpackChunkName: "news" */ './newsLazy').catch(e => {
-			errorModule.show(apiParams.errorMessages.newsNotLoaded);
-			throw new Error('news module load failed');
-		});
+	async getNewsModule() {
+		await import(/* webpackChunkName: "news" */ './news')
+			.then(module => {
+				this.newsModule = module.default;
+				this.newsModule.imgLoadListener();
+			})
+			.catch(e => {
+				errorModule.show(apiParams.errorMessages.newsNotLoaded);
+				throw new Error('news module load failed');
+			});
 	}
 }
 

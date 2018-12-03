@@ -1,17 +1,15 @@
 import { apiParams } from '../params';
 import errorModule from './errorLazy';
 
-const newsType = apiParams.queryTypes[apiParams.queryTypes[0].code]
-const srcType = apiParams.queryTypes[apiParams.queryTypes[2].code];
-
 class Fetcher {
 	constructor(type) {
 		this.type = type;
+		return this.fetcher.bind(this);
 	}
 	queryItem(param, value) {
 		return `${param}=${value}&`;
 	}
-	queryConstructor(type = this.type, params) {
+	queryConstructor(type, params) {
 		let query = '';
 		if (typeof params !== 'string') {
 			for (let param in params) {
@@ -27,13 +25,13 @@ class Fetcher {
 		} else {
 			query = `${query}${this.queryItem('q', params)}`;
 		};
-		return `${apiParams.url}${type.code}?${query}apiKey=${apiParams.apiKey}`;
+		return `${apiParams.url}${type}?${query}apiKey=${apiParams.apiKey}`;
 	}
-	async fetcher(url) {
+	async fetcher(param) {
 		errorModule.hide();
 		let err = apiParams.errorMessages.nothing;
 		try {
-			let response = await fetch(url);
+			let response = await fetch(this.queryConstructor(this.type, param));
 			if (response.ok) {
 				let status = response.status;
 				if (status === 200) {
@@ -50,12 +48,6 @@ class Fetcher {
 			errorModule.show(err);
 		}
 	}
-	static init() {
-
-	}
 }
 
-export default fetchFactory = type => {
-	if (type === newsType) return new Fetcher(newsType).init(type);
-	if (type === srcType) return new Fetcher(srcType).init(type);
-};
+export default Fetcher;

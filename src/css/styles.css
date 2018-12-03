@@ -132,20 +132,8 @@ body {
   width: 25%;
   margin-bottom: 10px;
 }
-
 .error-msg {
-  margin: 50px 0;
-  text-align: center;
-  font-size: 26px;
-  color: #bbb;
   display: none;
-}
-.error-msg.warn {
-  color: #f42323;
-}
-.error-msg.visible {
-  display: block;
-  animation: fadeIn 500ms forwards;
 }
 
 /* responsive */

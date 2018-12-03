@@ -1,4 +1,5 @@
 import newsTemplate from '../views/news';
+import "../css/news.css";
 
 class News {
 	constructor(el) {

@@ -1,8 +1,10 @@
+import "../css/error.css";
+
 class ErrorMsg {
 	constructor(el) {
-	  this.el = el;
-	  this.visibleClass = 'visible';
-	  this.warningClass = 'warn';
+		this.el = el;
+		this.visibleClass = 'visible';
+		this.warningClass = 'warn';
 	}
 	show(msg) {
 	  let classArr = [this.visibleClass];
