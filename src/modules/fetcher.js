@@ -5,7 +5,7 @@ class Fetcher {
 	constructor(method = 'GET', type) {
 		this.type = type;
 		this.method = this.checkMethod(method);
-		return this.fetcher.bind(this);
+		return this.fetchData.bind(this);
 	}
 
 	checkMethod(method) {
@@ -37,7 +37,7 @@ class Fetcher {
 		};
 		return `${apiParams.url}${type}?${query}apiKey=${apiParams.apiKey}`;
 	}
-	async fetcher(param) {
+	async fetchData(param) {
 		if (apiParams.errorIsVisible) errorModule.hide();
 		let err = apiParams.errorMessages.nothing;
 		try {
