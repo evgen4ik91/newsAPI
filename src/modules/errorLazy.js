@@ -1,3 +1,5 @@
+import { apiParams } from '../params';
+
 class ErrorLazy {
 	constructor() {
 		this.module = null;
@@ -13,6 +15,7 @@ class ErrorLazy {
 		} else {
 			this.module.show(msg);
 		}
+		apiParams.errorIsVisible = true;
 	}
 	hide() {
 		if (this.module == null) {
@@ -22,6 +25,7 @@ class ErrorLazy {
 		} else {
 			this.module.hide();
 		}
+		apiParams.errorIsVisible = false;
 	}
 }
 

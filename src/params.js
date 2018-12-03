@@ -37,6 +37,7 @@ export let apiParams = {
 			list: []
 	  }
 	],
+	errorIsVisible: false,
 	errorMessages: {
 	  nothing: {
 			isWarn: false,

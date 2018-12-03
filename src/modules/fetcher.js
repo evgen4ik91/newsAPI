@@ -38,7 +38,7 @@ class Fetcher {
 		return `${apiParams.url}${type}?${query}apiKey=${apiParams.apiKey}`;
 	}
 	async fetcher(param) {
-		errorModule.hide();
+		if (apiParams.errorIsVisible) errorModule.hide();
 		let err = apiParams.errorMessages.nothing;
 		try {
 			let response = await fetch(this.queryConstructor(this.type, param), {method: this.method});
