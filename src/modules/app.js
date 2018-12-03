@@ -4,10 +4,18 @@ import Fetcher from './fetcher';
 import newsModule from './newsLazy';
 import errorModule from './errorLazy';
 
+let FetcherProxy = new Proxy(Fetcher, {
+	construct: function(target, argumentsList) {
+		console.log(`Fetcher with args: ${argumentsList}`);
+		return new target(...argumentsList);
+	}
+});
 
 const fetchNewsFilter = new Fetcher('GET', apiParams.queryTypes[0].code);
 const fetchNewsSearch = new Fetcher('GET', apiParams.queryTypes[1].code);
 const fetchSources = new Fetcher('GET', apiParams.queryTypes[2].code);
+
+
 
 class App {
 	constructor() {
