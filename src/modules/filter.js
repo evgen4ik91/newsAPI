@@ -1,5 +1,5 @@
 import { apiParams } from '../params';
-import handlers from './handlers';
+import app from './app';
 import filterTpl from '../views/filter';
 
 class Filter {
@@ -34,9 +34,9 @@ class Filter {
 			apiParams.defaultParams[type] = select.value;
 			if (type !== 'sources') {
 				apiParams.defaultParams.sources = 'all';
-				handlers.getSources();
+				app.getSources();
 			};
-			handlers.getNews();
+			app.getNews();
 	  };
 	}
 }

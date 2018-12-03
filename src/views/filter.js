@@ -1,8 +1,9 @@
 class Filter {
 	template(itemName, options) {
 		return `
-		  <div class="col filter__item">
-			<select class="styled-inp" id="${itemName}-select" data-type="${itemName}">${options}</select>
+			<div class="col filter__item">
+				<label class="styled-label" for="${itemName}-select">${itemName}</label>
+				<select class="styled-inp" id="${itemName}-select" data-type="${itemName}">${options}</select>
 		  </div>
 		`;
 	}

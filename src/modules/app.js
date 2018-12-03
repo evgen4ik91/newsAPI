@@ -1,19 +1,24 @@
 import { apiParams } from '../params';
 import filter from './filter';
 import Fetcher from './fetcher';
+import newsModule from './newsLazy';
 import errorModule from './errorLazy';
+
 
 const fetchNewsFilter = new Fetcher('GET', apiParams.queryTypes[0].code);
 const fetchNewsSearch = new Fetcher('GET', apiParams.queryTypes[1].code);
 const fetchSources = new Fetcher('GET', apiParams.queryTypes[2].code);
 
-class Handlers {
-	constructor () {
+class App {
+	constructor() {
 		this.newsModule = null;
 	}
 	async getNews(type = apiParams.queryTypes[0], params = apiParams.defaultParams) {
 		try {
-			if (this.newsModule == null) await this.getNewsModule();
+			if (this.newsModule == null) {
+				this.newsModule = await newsModule.getModule();
+				this.newsModule.imgLoadListener();
+			}
 			this.newsModule.loading(true);
 			this.newsModule.setTitle(type.name);
 			let newsItems = type.code === apiParams.queryTypes[0].code ? await fetchNewsFilter(params) : await fetchNewsSearch(params);
@@ -38,17 +43,6 @@ class Handlers {
 			console.log('Cannot get sources');
 		}
 	}
-	async getNewsModule() {
-		await import(/* webpackChunkName: "news" */ './news')
-			.then(module => {
-				this.newsModule = module.default;
-				this.newsModule.imgLoadListener();
-			})
-			.catch(e => {
-				errorModule.show(apiParams.errorMessages.newsNotLoaded);
-				throw new Error('news module load failed');
-			});
-	}
 }
 
-export default new Handlers();
+export default new App();

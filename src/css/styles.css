@@ -58,6 +58,11 @@ body {
   background-color: #bbb;
   cursor: not-allowed;
 }
+.styled-label {
+  display: inline-block;
+  margin-bottom: 4px;
+  text-transform: capitalize;
+}
 
 /* keyframes */
 @keyframes fadeIn {
