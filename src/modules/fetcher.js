@@ -2,10 +2,20 @@ import { apiParams } from '../params';
 import errorModule from './errorLazy';
 
 class Fetcher {
-	constructor(type) {
+	constructor(method = 'GET', type) {
 		this.type = type;
+		this.method = this.checkMethod(method);
 		return this.fetcher.bind(this);
 	}
+
+	checkMethod(method) {
+		switch(method.toUpperCase()) {
+			case 'GET': return method;
+			case 'POST': return method;
+			default: return 'GET';
+		};
+	}
+
 	queryItem(param, value) {
 		return `${param}=${value}&`;
 	}
@@ -31,7 +41,7 @@ class Fetcher {
 		errorModule.hide();
 		let err = apiParams.errorMessages.nothing;
 		try {
-			let response = await fetch(this.queryConstructor(this.type, param));
+			let response = await fetch(this.queryConstructor(this.type, param), {method: this.method});
 			if (response.ok) {
 				let status = response.status;
 				if (status === 200) {

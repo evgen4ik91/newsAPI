@@ -3,9 +3,9 @@ import filter from './filter';
 import Fetcher from './fetcher';
 import errorModule from './errorLazy';
 
-const fetchNewsFilter = new Fetcher(apiParams.queryTypes[0].code);
-const fetchNewsSearch = new Fetcher(apiParams.queryTypes[1].code);
-const fetchSources = new Fetcher(apiParams.queryTypes[2].code);
+const fetchNewsFilter = new Fetcher('GET', apiParams.queryTypes[0].code);
+const fetchNewsSearch = new Fetcher('GET', apiParams.queryTypes[1].code);
+const fetchSources = new Fetcher('GET', apiParams.queryTypes[2].code);
 
 class Handlers {
 	constructor () {
