@@ -4,23 +4,9 @@ import Fetcher from './fetcher';
 import newsModule from './newsLazy';
 import errorModule from './errorLazy';
 
-let FetcherProxy = new Proxy(Fetcher, {
-	construct: (target, argumentsList) => {
-		console.log(`Fetcher with args: ${argumentsList}`);
-		return new target(...argumentsList);
-	}
-});
-
-const fetchNewsFilter = new FetcherProxy('GET', apiParams.queryTypes[0].code);
-const fetchNewsSearch = new FetcherProxy('GET', apiParams.queryTypes[1].code);
-const fetchSources = new FetcherProxy('GET', apiParams.queryTypes[2].code);
-
-let fetchNewsProxy = new Proxy(fetchNewsFilter, {
-	apply: (target, thisArg, argumentsList) => {
-		console.log('Fetcher was called');
-		return target(...argumentsList);
-	}
-});
+const fetchNewsFilter = new Fetcher('GET', apiParams.queryTypes[0].code);
+const fetchNewsSearch = new Fetcher('GET', apiParams.queryTypes[1].code);
+const fetchSources = new Fetcher('GET', apiParams.queryTypes[2].code);
 
 class App {
 	constructor() {
@@ -34,7 +20,7 @@ class App {
 			}
 			this.newsModule.loading(true);
 			this.newsModule.setTitle(type.name);
-			let newsItems = type.code === apiParams.queryTypes[0].code ? await fetchNewsProxy(params) : await fetchNewsSearch(params);
+			let newsItems = type.code === apiParams.queryTypes[0].code ? await fetchNewsFilter(params) : await fetchNewsSearch(params);
 			this.newsModule.loading(false);
 			if (newsItems.length) {
 				this.newsModule.render(newsItems);

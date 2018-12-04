@@ -5,7 +5,16 @@ class Fetcher {
 	constructor(method = 'GET', type) {
 		this.type = type;
 		this.method = this.checkMethod(method);
-		return this.fetchData.bind(this);
+		return this.proxyInit(this.fetchData);
+	}
+
+	proxyInit(func) {
+		return new Proxy(func, {
+			apply: (target, thisArg, argumentsList) => {
+				console.log('Fetcher was called');
+				return target.call(this, ...argumentsList);
+			}
+		});
 	}
 
 	checkMethod(method) {
