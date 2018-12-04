@@ -11,7 +11,7 @@ class Fetcher {
 	proxyInit(func) {
 		return new Proxy(func, {
 			apply: (target, thisArg, argumentsList) => {
-				console.log('Fetcher was called');
+				console.log('Fetcher was called with args:', ...argumentsList);
 				return target.call(this, ...argumentsList);
 			}
 		});
